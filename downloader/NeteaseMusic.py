@@ -3,6 +3,7 @@ from util.AES import AESCipher
 import json
 import time
 
+
 class NeteaseMusic(object):
 
     def __init__(self):
@@ -16,10 +17,10 @@ class NeteaseMusic(object):
     # aes-128-cbc
     def aesEncode(self, data, key):
         return AESCipher(key=key).encrypt(data, self.config['IV'])
-    
+
     # 预处理Post数据
     def prepare(self, data):
-        result = { 'params': self.aesEncode(json.dumps(data), self.config['nonce']) }
+        result = {'params': self.aesEncode(json.dumps(data), self.config['nonce'])}
         result['params'] = self.aesEncode(result['params'], self.config['secretKey'])
         result['encSecKey'] = self.config['encSecKey']
         return result
@@ -53,7 +54,7 @@ class NeteaseMusic(object):
             return result
         else:
             return []
-    
+
     # 搜索歌曲 取第一首
     def searchSingle(self, keyword, singer=None):
         result = self.search(keyword, singer)
@@ -64,11 +65,12 @@ class NeteaseMusic(object):
 
     # 批量获取歌曲链接
     def getUrl(self, songIds):
-        response = Request.jsonPost(url='http://music.163.com/weapi/song/enhance/player/url?csrf_token=', params=self.prepare({
-            'ids': songIds,
-            'br': 999000,
-            'csrf_token': ''
-        }))
+        response = Request.jsonPost(url='http://music.163.com/weapi/song/enhance/player/url?csrf_token=',
+                                    params=self.prepare({
+                                        'ids': songIds,
+                                        'br': 999000,
+                                        'csrf_token': ''
+                                    }))
 
         # 解析response
         if 'code' in response and response['code'] == 200:
@@ -78,7 +80,7 @@ class NeteaseMusic(object):
                 return []
         else:
             return None
-    
+
     # 获取单一歌曲链接
     def getSingleUrl(self, songId):
         result = self.getUrl([songId])
@@ -109,7 +111,7 @@ class NeteaseMusic(object):
     # 通过ID获取歌曲信息
     def getInfo(self, id):
         response = Request.jsonPost(url='http://music.163.com/weapi/v3/song/detail?csrf_token=', params=self.prepare({
-            'c': json.dumps([{ 'id': id }]),
+            'c': json.dumps([{'id': id}]),
             'csrf_token': ''
         }))
         if 'code' in response and response['code'] == 200:
@@ -120,11 +122,7 @@ class NeteaseMusic(object):
                     'name': song['name'],
                     'singer': song['ar'][0]['name']
                 }
-                pass
-            else:
-                return False
-        else:
-            return False
+        return False
 
     # 获取歌词
     def getLyric(self, songId):

@@ -1,6 +1,7 @@
 import logging
 from colorlog import ColoredFormatter
 
+
 class Log(object):
     def __init__(self, name=''):
         logger = logging.getLogger(name)
@@ -13,8 +14,7 @@ class Log(object):
         logger.setLevel(level=logging.DEBUG)
 
         self.logger = logger
-        pass
-    
+
     def debug(self, text):
         self.logger.debug(text)
 

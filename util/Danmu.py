@@ -4,6 +4,7 @@ import urllib.request
 import json
 import time
 
+
 class Danmu(object):
     def __init__(self):
         self.config = Config()
@@ -11,14 +12,14 @@ class Danmu(object):
             'getUrl': 'http://api.live.bilibili.com/ajax/msg',
             'sendUrl': 'http://api.live.bilibili.com/msg/send',
             'header': {
-                "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                "Accept-Encoding":"utf-8",
-                "Accept-Language":"zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3",
-                "Connection":"keep-alive",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Encoding": "utf-8",
+                "Accept-Language": "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3",
+                "Connection": "keep-alive",
                 "Cookie": self.config.get('cookie'),
-                "Host":"api.live.bilibili.com",
-                "Referer":"http://live.bilibili.com/" + self.config.get('roomId'),
-                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:32.0) Gecko/20100101 Firefox/32.0"
+                "Host": "api.live.bilibili.com",
+                "Referer": "http://live.bilibili.com/" + self.config.get('roomId'),
+                "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:32.0) Gecko/20100101 Firefox/32.0"
             }
         }
         self.sendLock = False
@@ -26,7 +27,7 @@ class Danmu(object):
     def get(self):
         # 准备数据
         roomId = self.config.get('roomId')
-        postData = urllib.parse.urlencode({	'token:': '', 'csrf_token:': '', 'roomid': roomId }).encode('utf-8')
+        postData = urllib.parse.urlencode({'token:': '', 'csrf_token:': '', 'roomid': roomId}).encode('utf-8')
 
         # 发送请求
         request = urllib.request.Request(self.httpConfig['getUrl'], postData, self.httpConfig['header'])
@@ -48,9 +49,9 @@ class Danmu(object):
                 thisTimestamp = time.mktime(time.strptime(danmu['timeline'], "%Y-%m-%d %H:%M:%S"))
                 if configTimestamp >= thisTimestamp:
                     continue
-                
+
                 self.config.set(module='danmu', key='timestamp', value=thisTimestamp)
-                
+
                 result.append({
                     'name': danmu['nickname'],
                     'time': danmu['timeline'],
@@ -70,7 +71,7 @@ class Danmu(object):
             elapsedTime += 1
             if (elapsedTime > 30):
                 return None
-        
+
         # 判断长度
         lengthLimit = 20
         if len(text) > lengthLimit:
@@ -78,19 +79,19 @@ class Danmu(object):
                 self.send(text[i:i + lengthLimit])
                 time.sleep(1.5)
             return True
-        
+
         # 准备数据
         self.sendLock = True
         try:
             roomId = self.config.get('roomId')
             postData = (urllib.parse.urlencode({
-                            'color': '16777215',
-                            'fontsize': '25',
-                            'mode': '1',
-                            'msg': text,
-                            'rnd': '1512718534',
-                            'roomid': roomId
-                        }).encode('utf-8'))
+                'color': '16777215',
+                'fontsize': '25',
+                'mode': '1',
+                'msg': text,
+                'rnd': '1512718534',
+                'roomid': roomId
+            }).encode('utf-8'))
 
             # 发送请求
             request = urllib.request.Request(self.httpConfig['sendUrl'], postData, self.httpConfig['header'])

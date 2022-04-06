@@ -3,10 +3,15 @@ import urllib.request
 import json
 import socket
 
+
 class Request(object):
 
     @staticmethod
-    def jsonGet(url, params={}, header={}):
+    def jsonGet(url, params=None, header=None):
+        if header is None:
+            header = {}
+        if params is None:
+            params = {}
         if params:
             # 判断最后一位是否为?
             paramStr = urllib.parse.urlencode(params)
@@ -15,7 +20,7 @@ class Request(object):
                 url += '?' + paramStr
             else:
                 url += url + paramStr
-        
+
         # 发送请求
         request = urllib.request.Request(url=url, headers=header, method='GET')
         if not header:
@@ -23,10 +28,14 @@ class Request(object):
 
         response = json.loads(urllib.request.urlopen(request).read().decode('utf-8'))
         return response
-    
+
     @staticmethod
-    def jsonPost(url, params={}, header={}):
+    def jsonPost(url, params=None, header=None):
         # 判断是否需要转换
+        if header is None:
+            header = {}
+        if params is None:
+            params = {}
         postStr = ''
         if isinstance(params, str):
             postStr = params
@@ -41,7 +50,7 @@ class Request(object):
 
         response = json.loads(urllib.request.urlopen(request).read().decode('utf-8'))
         return response
-    
+
     @staticmethod
     def download(url, savePath, callback=None):
         # 设置下载超时时间

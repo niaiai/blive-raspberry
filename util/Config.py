@@ -1,5 +1,5 @@
 import json
-import os
+
 
 class Config(object):
     def __init__(self):
@@ -36,12 +36,12 @@ class Config(object):
                     key: value
                 }
 
-        file = open('./config.json', 'w')
-        json.dump(obj=self.config, fp=file, ensure_ascii=False, indent=4)
-        pass
+        with open('./config.json', 'w') as file:
+            json.dump(obj=self.config, fp=file, ensure_ascii=False, indent=4)
 
     # 从文件中读取配置对象
     def reload(self):
         configPath = './config.json'
-        configFile = open(configPath, encoding='utf-8')
-        self.config = json.load(configFile)
+
+        with open(configPath, encoding='utf-8') as file:
+            self.config = json.load(file)

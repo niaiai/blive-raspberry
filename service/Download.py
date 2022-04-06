@@ -5,8 +5,8 @@ from service.Service import Service
 from util.Danmu import Danmu
 from util.Log import Log
 
+
 class DownloadService(Service):
-    
     def __init__(self):
         self.danmu = Danmu()
         self.log = Log('Download Service')
@@ -18,7 +18,6 @@ class DownloadService(Service):
             # 判断队列是否为空
             if DownloadQueue.empty():
                 return
-            
             # 获取新的下载任务
             task = DownloadQueue.get()
             if task and 'type' in task:
@@ -28,8 +27,7 @@ class DownloadService(Service):
                     pass
         except Exception as e:
             self.log.error(e)
-            pass
-    
+
     def musicDownload(self, song):
 
         # 搜索歌曲并下载
@@ -47,6 +45,3 @@ class DownloadService(Service):
                 'singer': song['singer'],
                 'username': song['username']
             })
-        else:
-            pass
-

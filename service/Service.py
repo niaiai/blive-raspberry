@@ -1,11 +1,10 @@
-import threading, time
-import ctypes
+import threading
+
 
 class Service(object):
     def start(self):
         self.threadRun = True
         threading.Thread(target=self.__run).start()
-    pass
 
     def stop(self):
         self.threadRun = False
@@ -17,4 +16,3 @@ class Service(object):
     def run(self):
         self.stop()
         raise Exception('未实现 service 的 run 函数')
-

@@ -10,11 +10,13 @@ mediaService = MediaService()
 danmuService = DanmuService()
 downloadService = DownloadService()
 
+
 def exitHandler(signum, frame):
     log.success('请等待 Service 退出...')
     mediaService.stop()
     danmuService.stop()
     downloadService.stop()
+
 
 if __name__ == '__main__':
     mediaService.start()

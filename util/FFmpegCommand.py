@@ -1,5 +1,6 @@
 import os
 
+
 class FFmpegCommand(object):
 
     def __init__(self):
@@ -11,7 +12,6 @@ class FFmpegCommand(object):
             'output': '',
             'bin': 'ffmpeg'
         }
-        pass
 
     def input(self, filename, time=0, fps=0, format=''):
         inputCommand = []
@@ -21,7 +21,7 @@ class FFmpegCommand(object):
             inputCommand.append('-t %s' % time)
         if format != '':
             inputCommand.append('-f %s' % format)
-        
+
         inputCommand.append('-i "%s"' % filename)
         self.config['input'].append(self.buildCommand(inputCommand))
         return self
@@ -55,7 +55,7 @@ class FFmpegCommand(object):
     def audioCodec(self, code):
         self.config['outputCommand'].append('-acodec %s' % code)
         return self
-    
+
     # -vcodec 视频编码
     def vedioCodec(self, code):
         self.config['outputCommand'].append('-vcodec %s' % code)
@@ -67,7 +67,7 @@ class FFmpegCommand(object):
             self.config['outputCommand'].append('-b %s' % rate)
         else:
             self.config['outputCommand'].append('-b:%s %s' % (type, rate))
-            
+
         return self
 
     # 编码方式
@@ -93,7 +93,7 @@ class FFmpegCommand(object):
     def format(self, fmt):
         self.config['outputCommand'].append('-f %s' % fmt)
         return self
-    
+
     # 由CommandArray转换为command
     def buildCommand(self, array):
         command = ''
